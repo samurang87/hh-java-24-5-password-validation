@@ -20,4 +20,18 @@ public class PasswordValidationTest {
         Assertions.assertFalse(res);
     }
 
+    @Test
+    void given12_containsDigitsReturnsTrue() {
+        String password = "12345";
+        boolean res = Main.containsDigits(password);
+        Assertions.assertTrue(res);
+    }
+
+    @Test
+    void givenLettersOnly_containsDigitsReturnsFalse() {
+        String password = "hello";
+        boolean res = Main.containsDigits(password);
+        Assertions.assertFalse(res);
+    }
+
 }
