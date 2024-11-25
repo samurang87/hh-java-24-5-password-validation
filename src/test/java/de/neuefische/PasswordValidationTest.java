@@ -67,4 +67,47 @@ public class PasswordValidationTest {
         boolean res = Main.containsUppercaseLetters(password);
         Assertions.assertFalse(res);
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "admin", "azerty", "password", "Password", "qwerty", "qwertz",
+    })
+    void givenTrivialPassword_isUncommonReturnsFalse(String password) {
+        boolean res = Main.isUncommon(password);
+        Assertions.assertFalse(res);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "abcdef12", "6GhijK",
+    })
+    void givenAlphabeticalSequence_isUncommonReturnsFalse(String password) {
+        boolean res = Main.isUncommon(password);
+        Assertions.assertFalse(res);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "123456s", "654f321",
+    })
+    void givenNumericalSequence_isUncommonReturnsFalse(String password) {
+        boolean res = Main.isUncommon(password);
+        Assertions.assertFalse(res);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "aaa111", "tt4t444ttt", "aAaa111"
+    })
+    void givenTrivialRepetition_isUncommonReturnsFalse(String password) {
+        boolean res = Main.isUncommon(password);
+        Assertions.assertFalse(res);
+    }
+
+    @Test
+    void givenSpecialCharacter_isUncommonReturnsTrue() {
+        String password = "abcd@efgh";
+        boolean res = Main.isUncommon(password);
+        Assertions.assertTrue(res);
+    }
 }
