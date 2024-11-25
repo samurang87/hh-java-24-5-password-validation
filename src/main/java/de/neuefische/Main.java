@@ -1,17 +1,24 @@
 package de.neuefische;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Welcome to the Password Validator");
-        String password = "12%34r56t";
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please enter a potential password: ");
+        String password = scanner.nextLine();
         boolean res = isLongEnough(password) &&
                 containsDigits(password) &&
                 containsLowercaseLetters(password) &&
                 containsUppercaseLetters(password) &&
                 isUncommon(password);
-        System.out.println(res);
+        if (res) {
+            System.out.println("Your password is strong! \uD83D\uDCAA");
+        } else {
+            System.out.println("Your password is weak... \uD83D\uDE22");
+        }
     }
 
     public static boolean isLongEnough(String password) {
