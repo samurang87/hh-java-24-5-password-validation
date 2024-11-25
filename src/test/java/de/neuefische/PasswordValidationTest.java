@@ -97,7 +97,7 @@ public class PasswordValidationTest {
 
     @ParameterizedTest
     @CsvSource({
-            "aaa111", "tt4t444ttt", "aAaa111"
+            "aaa111@", "tt4t444ttt", "aAaa111", "111111111"
     })
     void givenTrivialRepetition_isUncommonReturnsFalse(String password) {
         boolean res = Main.isUncommon(password);
@@ -105,9 +105,18 @@ public class PasswordValidationTest {
     }
 
     @Test
-    void givenSpecialCharacter_isUncommonReturnsTrue() {
-        String password = "abcd@efgh";
-        boolean res = Main.isUncommon(password);
+    void givenSpecialCharacter_containsSpecialCharacterReturnsTrue() {
+        String password = "11111111@1";
+        boolean res = Main.containsSpecialCharacter(password);
         Assertions.assertTrue(res);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "aaA111", "tt", "123",
+    })
+    void givenAlphanumeric_containsSpecialCharactersReturnsFalse(String password) {
+        boolean res = Main.containsSpecialCharacter(password);
+        Assertions.assertFalse(res);
     }
 }

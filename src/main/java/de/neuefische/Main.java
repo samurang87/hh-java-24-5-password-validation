@@ -2,6 +2,8 @@ package de.neuefische;
 
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,7 +15,8 @@ public class Main {
                 containsDigits(password) &&
                 containsLowercaseLetters(password) &&
                 containsUppercaseLetters(password) &&
-                isUncommon(password);
+                isUncommon(password) &&
+                containsSpecialCharacter(password);
         if (res) {
             System.out.println("Your password is strong! \uD83D\uDCAA");
         } else {
@@ -74,7 +77,7 @@ public class Main {
         if (containsNumericalSequence(password)) {
             return false;
         }
-        return !containsOnlyOneLetterAndNumber(password);
+        return !containsOnlyOneOfLetterAndNumber(password);
     }
 
     private static boolean containsAlphabeticalSequence(String password) {
@@ -104,35 +107,32 @@ public class Main {
         return true;
     }
 
-    private static boolean containsOnlyOneLetterAndNumber(String password) {
-        String passwordWithoutLetters = password.replaceAll("\\D", "");
-        boolean onlyOneRepeatedNumber = true;
-        if (passwordWithoutLetters.length() < 2) {
-            onlyOneRepeatedNumber = false;
-        } else {
-            char firstLetter = passwordWithoutLetters.charAt(0);
-            for (int i = 1; i < passwordWithoutLetters.length(); i++) {
-                char current = passwordWithoutLetters.charAt(i);
-                if (current != firstLetter) {
-                    onlyOneRepeatedNumber = false;
-                    break;
-                }
-            }
-        }
-        boolean onlyOneRepeatedLetter = true;
-        String passwordWithoutDigits = password.toLowerCase().replaceAll("\\d", "");
-        if (passwordWithoutDigits.length() < 2) {
-            onlyOneRepeatedLetter = false;
-        } else {
-            char firstDigit = passwordWithoutDigits.charAt(0);
-            for (int i = 1; i < passwordWithoutDigits.length(); i++) {
-                char current = passwordWithoutDigits.charAt(i);
+    private static boolean isOnlyOneRepeatedCharacter(String text) {
+        boolean onlyOneRepeatedChar = true;
+        if (!text.isEmpty()) {
+            char firstDigit = text.charAt(0);
+            for (int i = 1; i < text.length(); i++) {
+                char current = text.charAt(i);
                 if (current != firstDigit) {
-                    onlyOneRepeatedLetter = false;
+                    onlyOneRepeatedChar = false;
                     break;
                 }
             }
         }
+        return onlyOneRepeatedChar;
+    }
+
+    private static boolean containsOnlyOneOfLetterAndNumber(String password) {
+        password = password.replaceAll("[^a-zA-Z0-9\\s]", "");
+        String passwordWithoutLetters = password.replaceAll("\\D", "");
+        boolean onlyOneRepeatedNumber = isOnlyOneRepeatedCharacter(passwordWithoutLetters);
+        boolean onlyOneRepeatedLetter = isOnlyOneRepeatedCharacter(password.toLowerCase().replaceAll("\\d", ""));
         return onlyOneRepeatedNumber && onlyOneRepeatedLetter;
+    }
+
+    public static boolean containsSpecialCharacter(String password) {
+        Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(password);
+        return m.find();
     }
 }
