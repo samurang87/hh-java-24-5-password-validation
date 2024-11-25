@@ -1,6 +1,7 @@
 package de.neuefische;
 
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,6 +22,7 @@ public class Main {
             System.out.println("Your password is strong! \uD83D\uDCAA");
         } else {
             System.out.println("Your password is weak... \uD83D\uDE22");
+            System.out.println("You could use something like " + generateRandomString());
         }
     }
 
@@ -134,5 +136,32 @@ public class Main {
         Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(password);
         return m.find();
+    }
+
+    public static String generateRandomString() {
+        String letters = "abcdefghijklmnopqrstuvwxyz";
+        String numbers = "0123456789";
+        String special = "!@#$%^&*()_+-=";
+
+        Random random = new Random();
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < 3; i++) {
+            result.append(letters.charAt(random.nextInt(letters.length())));
+        }
+
+        for (int i = 0; i < 3; i++) {
+            char upperChar = letters.charAt(random.nextInt(letters.length()));
+            result.append(String.valueOf(upperChar).toUpperCase());
+        }
+
+        for (int i = 0; i < 3; i++) {
+            result.append(special.charAt(random.nextInt(special.length())));
+        }
+
+        for (int i = 0; i < 3; i++) {
+            result.append(numbers.charAt(random.nextInt(numbers.length())));
+        }
+        return result.toString();
     }
 }
