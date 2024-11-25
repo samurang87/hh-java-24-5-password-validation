@@ -52,4 +52,19 @@ public class PasswordValidationTest {
         Assertions.assertFalse(res);
     }
 
+    @Test
+    void givenUppercase_containsUppercaseReturnsTrue() {
+        String password = "OH BOY";
+        boolean res = Main.containsUppercaseLetters(password);
+        Assertions.assertTrue(res);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "10", "smol", "&ˆ+)"
+    })
+    void givenNotUppercase_containsUppercaseReturnsFalse(String password) {
+        boolean res = Main.containsUppercaseLetters(password);
+        Assertions.assertFalse(res);
+    }
 }
