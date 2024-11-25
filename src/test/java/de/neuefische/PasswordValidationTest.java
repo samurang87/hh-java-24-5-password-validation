@@ -2,6 +2,8 @@ package de.neuefische;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 public class PasswordValidationTest {
 
@@ -31,6 +33,22 @@ public class PasswordValidationTest {
     void givenLettersOnly_containsDigitsReturnsFalse() {
         String password = "hello";
         boolean res = Main.containsDigits(password);
+        Assertions.assertFalse(res);
+    }
+
+    @Test
+    void givenLowercase_containsLowercaseReturnsTrue() {
+        String password = "hello";
+        boolean res = Main.containsLowercaseLetters(password);
+        Assertions.assertTrue(res);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "10", "HENLO", "&ˆ+)"
+    })
+    void givenNotLowercase_containsLowercaseReturnsFalse(String password) {
+        boolean res = Main.containsLowercaseLetters(password);
         Assertions.assertFalse(res);
     }
 
